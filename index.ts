@@ -7,16 +7,27 @@ import * as express from 'express'
 const app = express()
 
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS']})
-const TOKEN = 'ODk2MDQwNTQxODE5NjM3ODEw.YWBUyA.ij1GWc_I5-CD0R7P_0Yo6Vxk2X8'
+const TOKEN = process.env.TOKEN
 
 let CACHED_PAYLOADS = {
 	changes: {},
 	links: {}
 }
 
+declare global {
+	namespace NodeJS {
+		interface ProcessEnv {
+			TOKEN: string;
+			SERVER_ID: string;
+			PORT: number;
+			PWD: string;
+		}
+	}
+}
+
 const SUCCESS_COLOR = "#2AFF00"
 const ERROR_COLOR = "#FF1B00"
-const SERVER_ID = '896041525597831188'
+const SERVER_ID = process.env.SERVER_ID
 
 app.use(express.static('.'))
 app.use(urlencoded({ extended: true }))
@@ -43,7 +54,8 @@ client.on('ready', () => {
 		app.get('/wakeup', (req, res) => {
 			res.send(1)
 		})
-		app.listen(4657, '0.0.0.0', () => {
+
+		app.listen(process.env.PORT, '0.0.0.0', () => {
 			console.log('Bot started, watching role changes!')
 		})
 		
@@ -65,7 +77,6 @@ client.on('ready', () => {
 })
 
 client.on('guildMemberUpdate', (oldMember, newMember) => {
-	console.log('111111111111111')
 	if (oldMember.roles.cache.size < newMember.roles.cache.size) {
 		newMember.roles.cache.forEach(role => {
 			if (!oldMember.roles.cache.has(role.id)) {
