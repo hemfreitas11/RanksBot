@@ -7,27 +7,16 @@ import * as express from 'express'
 const app = express()
 
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS']})
-const TOKEN = process.env.TOKEN
+const TOKEN = process.env['TOKEN']
 
 let CACHED_PAYLOADS = {
 	changes: {},
 	links: {}
 }
 
-declare global {
-	namespace NodeJS {
-		interface ProcessEnv {
-			TOKEN: string;
-			SERVER_ID: string;
-			PORT: number;
-			PWD: string;
-		}
-	}
-}
-
 const SUCCESS_COLOR = "#2AFF00"
 const ERROR_COLOR = "#FF1B00"
-const SERVER_ID = process.env.SERVER_ID
+const SERVER_ID = process.env['SERVER_ID']
 
 app.use(express.static('.'))
 app.use(urlencoded({ extended: true }))
@@ -55,7 +44,7 @@ client.on('ready', () => {
 			res.send(1)
 		})
 
-		app.listen(process.env.PORT, '0.0.0.0', () => {
+		app.listen((process.env['PORT'] as unknown as number), '0.0.0.0', () => {
 			console.log('Bot started, watching role changes!')
 		})
 		

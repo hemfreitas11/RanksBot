@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -41,14 +41,14 @@ var DiscordJS = require("discord.js");
 var express = require("express");
 var app = express();
 var client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'] });
-var TOKEN = 'ODk2MDQwNTQxODE5NjM3ODEw.YWBUyA.ij1GWc_I5-CD0R7P_0Yo6Vxk2X8';
+var TOKEN = process.env['TOKEN'];
 var CACHED_PAYLOADS = {
     changes: {},
     links: {}
 };
 var SUCCESS_COLOR = "#2AFF00";
 var ERROR_COLOR = "#FF1B00";
-var SERVER_ID = '896041525597831188';
+var SERVER_ID = process.env['SERVER_ID'];
 app.use(express.static('.'));
 app.use((0, body_parser_1.urlencoded)({ extended: true }));
 app.use((0, body_parser_1.json)());
@@ -71,7 +71,7 @@ client.on('ready', function () {
         app.get('/wakeup', function (req, res) {
             res.send(1);
         });
-        app.listen(4657, '0.0.0.0', function () {
+        app.listen(process.env['PORT'], '0.0.0.0', function () {
             console.log('Bot started, watching role changes!');
         });
         client.guilds.cache.get(SERVER_ID).commands.create({
@@ -93,7 +93,6 @@ client.on('ready', function () {
     }
 });
 client.on('guildMemberUpdate', function (oldMember, newMember) {
-    console.log('111111111111111');
     if (oldMember.roles.cache.size < newMember.roles.cache.size) {
         newMember.roles.cache.forEach(function (role) {
             if (!oldMember.roles.cache.has(role.id)) {
@@ -123,37 +122,39 @@ client.on('guildMemberUpdate', function (oldMember, newMember) {
         });
     }
 });
-client.on('interactionCreate', function (interaction) { return __awaiter(void 0, void 0, void 0, function () {
-    var baseInteraction, commandName, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!interaction.isCommand)
-                    return [2 /*return*/];
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 5, , 6]);
-                baseInteraction = interaction;
-                commandName = baseInteraction.commandName;
-                if (!(commandName == 'link')) return [3 /*break*/, 3];
-                return [4 /*yield*/, runLinkCommand(baseInteraction)];
-            case 2:
-                _a.sent();
-                return [3 /*break*/, 4];
-            case 3:
-                if (commandName == 'emoji') {
-                    // await commandEmoji(interaction)
-                }
-                _a.label = 4;
-            case 4: return [3 /*break*/, 6];
-            case 5:
-                error_1 = _a.sent();
-                console.log(error_1);
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
-        }
+client.on('interactionCreate', function (interaction) {
+    return __awaiter(void 0, void 0, void 0, function () {
+        var baseInteraction, commandName, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!interaction.isCommand)
+                        return [2 /*return*/];
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 5, , 6]);
+                    baseInteraction = interaction;
+                    commandName = baseInteraction.commandName;
+                    if (!(commandName == 'link')) return [3 /*break*/, 3];
+                    return [4 /*yield*/, runLinkCommand(baseInteraction)];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    if (commandName == 'emoji') {
+                        // await commandEmoji(interaction)
+                    }
+                    _a.label = 4;
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    error_1 = _a.sent();
+                    console.log(error_1);
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
+            }
+        });
     });
-}); });
+});
 function runLinkCommand(interaction) {
     return __awaiter(this, void 0, void 0, function () {
         var username, id, code, embed;
