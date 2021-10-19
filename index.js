@@ -73,10 +73,10 @@ client.on('ready', function () {
                         channel = guild.channels.cache.get(FALLBACK_CHANNEL);
                     }
                     if (channel) {
-                        var embed = buildEmbed(false, user)
+                        var embed = buildEmbed(false, user.user)
                             .setURL('')
                             .setTitle("**Account Linked Sucessfully**")
-                            .addFields({ name: '\u200B', value: user.user.tag + " you have successfully linked **" + username + "** to this Discord account!*.\n\u200B", inline: true });
+                            .addFields({ name: '\u200B', value: "Congratulations <@" + user.user.id + ">, you have successfully linked **" + username + "** to this Discord account!.\n\u200B", inline: true });
                         console.log(embed);
                         channel.send(embed);
                     }
@@ -181,13 +181,18 @@ client.on('interactionCreate', function (interaction) { return __awaiter(void 0,
 }); });
 function runLinkCommand(interaction) {
     return __awaiter(this, void 0, void 0, function () {
-        var emb;
+        var username, id, code, embed;
         return __generator(this, function (_a) {
-            emb = buildEmbed(false, interaction.user)
-                .setURL('')
-                .setTitle("**Account Linked Sucessfully**")
-                .addFields({ name: '\u200B', value: "Congratulations <@" + interaction.user.id + ">, you have successfully linked **tttt** to this Discord account!*.\n\u200B", inline: true });
-            interaction.channel.send({ embeds: [emb] });
+            username = interaction.options.getString('nickname', true);
+            id = interaction.member.user.id;
+            code = generateCode(5);
+            CACHED_PAYLOADS.links[id] = {
+                payload: username + "-" + code
+            };
+            CACHED_CHANNELS[id] = interaction.channel.id;
+            embed = buildEmbed(false, interaction.user).setURL('').setTitle("**Started account linking**")
+                .addFields({ name: '\u200B', value: "To complete the process, please type `/authorize " + code + "` in our Minecraft server while logged in as **" + username + "**.\n\u200B", inline: true });
+            interaction.reply({ embeds: [embed], ephemeral: true })["catch"](console.error);
             return [2 /*return*/];
         });
     });

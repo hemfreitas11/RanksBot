@@ -44,11 +44,11 @@ client.on('ready', () => {
 
 					if (channel) {
 						const embed = 
-							buildEmbed(false, user)
+							buildEmbed(false, user.user)
 								.setURL('')
 								.setTitle(`**Account Linked Sucessfully**`)
 								.addFields(
-									{ name: '\u200B', value: `${user.user.tag} you have successfully linked **${username}** to this Discord account!*.\n\u200B`, inline: true }
+									{ name: '\u200B', value: `Congratulations <@${user.user.id}>, you have successfully linked **${username}** to this Discord account!.\n\u200B`, inline: true }
 								)
 						console.log(embed)
 						channel.send(embed)
@@ -136,15 +136,7 @@ client.on('interactionCreate', async (interaction) => {
 })
 
 async function runLinkCommand(interaction: DiscordJS.CommandInteraction) {
-	const emb = buildEmbed(false, interaction.user)
-	.setURL('')
-	.setTitle(`**Account Linked Sucessfully**`)
-	.addFields(
-		{ name: '\u200B', value: `Congratulations <@${interaction.user.id}>, you have successfully linked **tttt** to this Discord account!*.\n\u200B`, inline: true }
-	)
-	
-	interaction.channel.send({ embeds: [emb]})
-	/* let username = interaction.options.getString('nickname', true)
+	let username = interaction.options.getString('nickname', true)
 	let id = interaction.member.user.id
 	let code = generateCode(5)
 
@@ -154,11 +146,11 @@ async function runLinkCommand(interaction: DiscordJS.CommandInteraction) {
 
 	CACHED_CHANNELS[id] = interaction.channel.id
 
-	const embed = buildEmbed(false, interaction.member.user).setURL('').setTitle(`**Started account linking**`)
+	const embed = buildEmbed(false, interaction.user).setURL('').setTitle(`**Started account linking**`)
 		.addFields(
 			{ name: '\u200B', value: `To complete the process, please type \`/authorize ${code}\` in our Minecraft server while logged in as **${username}**.\n\u200B`, inline: true }
 		)
-	interaction.reply({ embeds: [embed], ephemeral: true }).catch(console.error) */
+	interaction.reply({ embeds: [embed], ephemeral: true }).catch(console.error)
 }
 
 function generateCode(length) {
@@ -171,7 +163,7 @@ function generateCode(length) {
 	return result;
 }
 
-function buildEmbed(isError, user) {
+function buildEmbed(isError, user: DiscordJS.User) {
 	const returnEmbed = new DiscordJS.MessageEmbed()
 	returnEmbed
 		.setTitle(`Placeholder title`)
