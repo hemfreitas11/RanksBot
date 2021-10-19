@@ -30,6 +30,9 @@ client.on('ready', () => {
 	try {
 		app.post('/f91a-kjd0-159f-ka91-8djk', (req, res) => {
 			console.log(CACHED_PAYLOADS)
+			console.log(CACHED_CHANNELS)
+			console.log(req)
+			console.log(req.body)
 			if (req.body) {
 				for (const discordId in Object.keys(req.body)) {
 					const username = req.body[discordId];
