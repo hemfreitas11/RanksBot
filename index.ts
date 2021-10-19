@@ -140,7 +140,7 @@ async function runLinkCommand(interaction: DiscordJS.CommandInteraction) {
 	.setURL('')
 	.setTitle(`**Account Linked Sucessfully**`)
 	.addFields(
-		{ name: '\u200B', value: `Congratulations ${interaction.user.tag}, you have successfully linked **tttt** to this Discord account!*.\n\u200B`, inline: true }
+		{ name: '\u200B', value: `Congratulations <#${interaction.user.id}>, you have successfully linked **tttt** to this Discord account!*.\n\u200B`, inline: true }
 	)
 	
 	interaction.channel.send({ embeds: [emb]})
