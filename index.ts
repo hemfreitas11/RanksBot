@@ -48,7 +48,7 @@ client.on('ready', () => {
 								.setURL('')
 								.setTitle(`**Account Linked Sucessfully**`)
 								.addFields(
-									{ name: '\u200B', value: `Congratulations <@${user.user.id}>, you have successfully linked **${username}** to this Discord account!.\n\u200B`, inline: true }
+									{ name: '\u200B', value: `Congratulations <@${user.user.id}>, you have successfully linked **${username}** to this Discord account!\n\u200B`, inline: true }
 								)
 						channel.send({embeds: [embed]})
 					}
