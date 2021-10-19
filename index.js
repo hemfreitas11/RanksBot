@@ -181,11 +181,13 @@ client.on('interactionCreate', function (interaction) { return __awaiter(void 0,
 }); });
 function runLinkCommand(interaction) {
     return __awaiter(this, void 0, void 0, function () {
+        var emb;
         return __generator(this, function (_a) {
-            interaction.channel.send(buildEmbed(false, interaction.user)
+            emb = buildEmbed(false, interaction.user)
                 .setURL('')
                 .setTitle("**Account Linked Sucessfully**")
-                .addFields({ name: '\u200B', value: "Congratulations " + interaction.user.tag + ", you have successfully linked **tttt** to this Discord account!*.\n\u200B", inline: true }));
+                .addFields({ name: '\u200B', value: "Congratulations " + interaction.user.tag + ", you have successfully linked **tttt** to this Discord account!*.\n\u200B", inline: true });
+            interaction.channel.send({ embeds: [emb] });
             return [2 /*return*/];
         });
     });

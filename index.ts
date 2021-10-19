@@ -136,14 +136,14 @@ client.on('interactionCreate', async (interaction) => {
 })
 
 async function runLinkCommand(interaction: DiscordJS.CommandInteraction) {
-	interaction.channel.send(
-		buildEmbed(false, interaction.user)
-			.setURL('')
-			.setTitle(`**Account Linked Sucessfully**`)
-			.addFields(
-				{ name: '\u200B', value: `Congratulations ${interaction.user.tag}, you have successfully linked **tttt** to this Discord account!*.\n\u200B`, inline: true }
-			) as unknown
+	const emb = buildEmbed(false, interaction.user)
+	.setURL('')
+	.setTitle(`**Account Linked Sucessfully**`)
+	.addFields(
+		{ name: '\u200B', value: `Congratulations ${interaction.user.tag}, you have successfully linked **tttt** to this Discord account!*.\n\u200B`, inline: true }
 	)
+	
+	interaction.channel.send({ embeds: [emb]})
 	/* let username = interaction.options.getString('nickname', true)
 	let id = interaction.member.user.id
 	let code = generateCode(5)
