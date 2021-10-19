@@ -60,30 +60,29 @@ client.on('ready', function () {
         app.post('/f91a-kjd0-159f-ka91-8djk', function (req, res) {
             console.log(CACHED_PAYLOADS);
             console.log(CACHED_CHANNELS);
-            if (req.body) {
-                for (var discordId in Object.keys(req.body)) {
-                    var username = req.body[discordId];
-                    var guild = client.guilds.cache.get(SERVER_ID);
-                    var user = guild.members.cache.get(discordId);
-                    if (user) {
-                        var channel = undefined;
-                        var storedChannel = CACHED_CHANNELS[discordId];
-                        if (storedChannel) {
-                            channel = guild.channels.cache.get(storedChannel);
-                        }
-                        else {
-                            channel = guild.channels.cache.get(FALLBACK_CHANNEL);
-                        }
-                        if (channel) {
-                            var embed = buildEmbed(false, user)
-                                .setURL('')
-                                .setTitle("**Account Linked Sucessfully**")
-                                .addFields({ name: '\u200B', value: user.user.tag + " you have successfully linked **" + username + "** to this Discord account!*.\n\u200B", inline: true });
-                            channel.send(embed);
-                        }
+            console.log(Object.keys(req.body));
+            for (var discordId in Object.keys(req.body)) {
+                var username = req.body[discordId];
+                var guild = client.guilds.cache.get(SERVER_ID);
+                var user = guild.members.cache.get(discordId);
+                if (user) {
+                    var channel = undefined;
+                    var storedChannel = CACHED_CHANNELS[discordId];
+                    if (storedChannel) {
+                        channel = guild.channels.cache.get(storedChannel);
                     }
-                    delete CACHED_CHANNELS[discordId];
+                    else {
+                        channel = guild.channels.cache.get(FALLBACK_CHANNEL);
+                    }
+                    if (channel) {
+                        var embed = buildEmbed(false, user)
+                            .setURL('')
+                            .setTitle("**Account Linked Sucessfully**")
+                            .addFields({ name: '\u200B', value: user.user.tag + " you have successfully linked **" + username + "** to this Discord account!*.\n\u200B", inline: true });
+                        channel.send(embed);
+                    }
                 }
+                delete CACHED_CHANNELS[discordId];
             }
             if (!(!!Object.keys(CACHED_PAYLOADS.links).length) && !(!!Object.keys(CACHED_PAYLOADS.changes).length)) {
                 res.send("{}");

@@ -31,32 +31,31 @@ client.on('ready', () => {
 		app.post('/f91a-kjd0-159f-ka91-8djk', (req, res) => {
 			console.log(CACHED_PAYLOADS)
 			console.log(CACHED_CHANNELS)
-			if (req.body) {
-				for (const discordId in Object.keys(req.body)) {
-					const username = req.body[discordId];
-					const guild = client.guilds.cache.get(SERVER_ID)
-					const user = guild.members.cache.get(discordId)
-					if (user) {
-						let channel = undefined
-						const storedChannel = CACHED_CHANNELS[discordId]
-						if (storedChannel) {
-							channel = guild.channels.cache.get(storedChannel)
-						} else {
-							channel = guild.channels.cache.get(FALLBACK_CHANNEL)
-						}
-						if (channel) {
-							const embed = 
-								buildEmbed(false, user)
-									.setURL('')
-									.setTitle(`**Account Linked Sucessfully**`)
-									.addFields(
-										{ name: '\u200B', value: `${user.user.tag} you have successfully linked **${username}** to this Discord account!*.\n\u200B`, inline: true }
-									)
-							channel.send(embed)
-						}
+			console.log(Object.keys(req.body))
+			for (const discordId in Object.keys(req.body)) {
+				const username = req.body[discordId];
+				const guild = client.guilds.cache.get(SERVER_ID)
+				const user = guild.members.cache.get(discordId)
+				if (user) {
+					let channel = undefined
+					const storedChannel = CACHED_CHANNELS[discordId]
+					if (storedChannel) {
+						channel = guild.channels.cache.get(storedChannel)
+					} else {
+						channel = guild.channels.cache.get(FALLBACK_CHANNEL)
 					}
-					delete CACHED_CHANNELS[discordId]
+					if (channel) {
+						const embed = 
+							buildEmbed(false, user)
+								.setURL('')
+								.setTitle(`**Account Linked Sucessfully**`)
+								.addFields(
+									{ name: '\u200B', value: `${user.user.tag} you have successfully linked **${username}** to this Discord account!*.\n\u200B`, inline: true }
+								)
+						channel.send(embed)
+					}
 				}
+				delete CACHED_CHANNELS[discordId]
 			}
 
 			if (!(!!Object.keys(CACHED_PAYLOADS.links).length) && !(!!Object.keys(CACHED_PAYLOADS.changes).length)) {
