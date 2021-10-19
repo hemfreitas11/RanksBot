@@ -191,6 +191,7 @@ function runLinkCommand(interaction) {
             CACHED_PAYLOADS.links[id] = {
                 payload: username + "-" + code
             };
+            CACHED_CHANNELS[id] = interaction.channel.id;
             embed = buildEmbed(false, interaction.member.user).setURL('').setTitle("**Started account linking**")
                 .addFields({ name: '\u200B', value: "To complete the process, please type `/authorize " + code + "` in our Minecraft server while logged in as **" + username + "**.\n\u200B", inline: true });
             interaction.reply({ embeds: [embed], ephemeral: true })["catch"](console.error);
