@@ -50,8 +50,7 @@ client.on('ready', () => {
 								.addFields(
 									{ name: '\u200B', value: `Congratulations <@${user.user.id}>, you have successfully linked **${username}** to this Discord account!.\n\u200B`, inline: true }
 								)
-						console.log(embed)
-						channel.send(embed)
+						channel.send({embeds: [embed]})
 					}
 				}
 				delete CACHED_CHANNELS[discordId]
