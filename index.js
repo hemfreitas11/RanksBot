@@ -61,10 +61,14 @@ client.on('ready', function () {
             console.log(CACHED_PAYLOADS);
             console.log(CACHED_CHANNELS);
             console.log(Object.keys(req.body));
-            for (var discordId in Object.keys(req.body)) {
+            for (var _i = 0, _a = Object.keys(req.body); _i < _a.length; _i++) {
+                var discordId = _a[_i];
                 var username = req.body[discordId];
                 var guild = client.guilds.cache.get(SERVER_ID);
                 var user = guild.members.cache.get(discordId);
+                console.log(username);
+                console.log(guild);
+                console.log(user);
                 if (user) {
                     var channel = undefined;
                     var storedChannel = CACHED_CHANNELS[discordId];

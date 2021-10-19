@@ -32,10 +32,13 @@ client.on('ready', () => {
 			console.log(CACHED_PAYLOADS)
 			console.log(CACHED_CHANNELS)
 			console.log(Object.keys(req.body))
-			for (const discordId in Object.keys(req.body)) {
+			for (const discordId of Object.keys(req.body)) {
 				const username = req.body[discordId];
 				const guild = client.guilds.cache.get(SERVER_ID)
 				const user = guild.members.cache.get(discordId)
+				console.log(username)
+				console.log(guild)
+				console.log(user)
 				if (user) {
 					let channel = undefined
 					const storedChannel = CACHED_CHANNELS[discordId]
