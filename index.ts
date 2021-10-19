@@ -17,6 +17,8 @@ let CACHED_PAYLOADS = {
 const SUCCESS_COLOR = "#2AFF00"
 const ERROR_COLOR = "#FF1B00"
 const SERVER_ID = process.env['SERVER_ID']
+const CACHED_CHANNELS = {}
+const FALLBACK_CHANNEL = process.env['FBCHANNEL']
 
 app.use(express.static('.'))
 app.use(urlencoded({ extended: true }))
@@ -26,8 +28,35 @@ client.login(TOKEN)
 
 client.on('ready', () => {
 	try {
-		app.get('/f91a-kjd0-159f-ka91-8djk', (req, res) => {
+		app.post('/f91a-kjd0-159f-ka91-8djk', (req, res) => {
 			console.log(CACHED_PAYLOADS)
+			if (req.body) {
+				for (const discordId in Object.keys(req.body)) {
+					const username = req.body[discordId];
+					const guild = client.guilds.cache.get(SERVER_ID)
+					const user = guild.members.cache.get(discordId)
+					if (user) {
+						let channel = undefined
+						const storedChannel = CACHED_CHANNELS[discordId]
+						if (storedChannel) {
+							channel = guild.channels.cache.get(storedChannel)
+						} else {
+							channel = guild.channels.cache.get(FALLBACK_CHANNEL)
+						}
+						if (channel) {
+							const embed = 
+								buildEmbed(false, user)
+									.setURL('')
+									.setTitle(`**Account Linked Sucessfully**`)
+									.addFields(
+										{ name: '\u200B', value: `${user.user.tag} you have successfully linked **${username}** to this Discord account!*.\n\u200B`, inline: true }
+									)
+							channel.send(embed)
+						}
+					}
+					delete CACHED_CHANNELS[discordId]
+				}
+			}
 
 			if (!(!!Object.keys(CACHED_PAYLOADS.links).length) && !(!!Object.keys(CACHED_PAYLOADS.changes).length)) {
 				res.send("{}")
@@ -116,7 +145,7 @@ async function runLinkCommand(interaction: DiscordJS.CommandInteraction) {
 		payload: `${username}-${code}`
 	}
 
-	const embed = buildEmbed(false, interaction.member.user).setURL('').setTitle(`**Started account linking**`).setColor("#2AFF00")
+	const embed = buildEmbed(false, interaction.member.user).setURL('').setTitle(`**Started account linking**`)
 		.addFields(
 			{ name: '\u200B', value: `To complete the process, please type \`/authorize ${code}\` in our Minecraft server while logged in as **${username}**.\n\u200B`, inline: true }
 		)
@@ -134,11 +163,10 @@ function generateCode(length) {
 }
 
 function buildEmbed(isError, user) {
-	let color = isError ? ERROR_COLOR : SUCCESS_COLOR
 	const returnEmbed = new DiscordJS.MessageEmbed()
 	returnEmbed
 		.setTitle(`Placeholder title`)
-		.setColor(color = isError)
+		.setColor(isError ? ERROR_COLOR : SUCCESS_COLOR)
 		.setURL('https://discord.gg/pVTjJT9mXZ')
 	if (user) {
 		returnEmbed
