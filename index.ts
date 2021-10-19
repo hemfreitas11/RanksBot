@@ -47,6 +47,7 @@ client.on('ready', () => {
 					} else {
 						channel = guild.channels.cache.get(FALLBACK_CHANNEL)
 					}
+
 					if (channel) {
 						const embed = 
 							buildEmbed(false, user)
@@ -55,6 +56,7 @@ client.on('ready', () => {
 								.addFields(
 									{ name: '\u200B', value: `Congratulations ${user.user.tag}, you have successfully linked **${username}** to this Discord account!*.\n\u200B`, inline: true }
 								)
+						console.log(embed)
 						channel.send(embed)
 					}
 				}
