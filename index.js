@@ -58,17 +58,11 @@ client.login(TOKEN);
 client.on('ready', function () {
     try {
         app.post('/f91a-kjd0-159f-ka91-8djk', function (req, res) {
-            console.log(CACHED_PAYLOADS);
-            console.log(CACHED_CHANNELS);
-            console.log(Object.keys(req.body));
             for (var _i = 0, _a = Object.keys(req.body); _i < _a.length; _i++) {
                 var discordId = _a[_i];
                 var username = req.body[discordId];
                 var guild = client.guilds.cache.get(SERVER_ID);
                 var user = guild.members.cache.get(discordId);
-                console.log(username);
-                console.log(guild);
-                console.log(user);
                 if (user) {
                     var channel = undefined;
                     var storedChannel = CACHED_CHANNELS[discordId];
@@ -82,7 +76,7 @@ client.on('ready', function () {
                         var embed = buildEmbed(false, user)
                             .setURL('')
                             .setTitle("**Account Linked Sucessfully**")
-                            .addFields({ name: '\u200B', value: "Congratulations " + user.user.tag + ", you have successfully linked **" + username + "** to this Discord account!*.\n\u200B", inline: true });
+                            .addFields({ name: '\u200B', value: user.user.tag + " you have successfully linked **" + username + "** to this Discord account!*.\n\u200B", inline: true });
                         console.log(embed);
                         channel.send(embed);
                     }
@@ -187,18 +181,11 @@ client.on('interactionCreate', function (interaction) { return __awaiter(void 0,
 }); });
 function runLinkCommand(interaction) {
     return __awaiter(this, void 0, void 0, function () {
-        var username, id, code, embed;
         return __generator(this, function (_a) {
-            username = interaction.options.getString('nickname', true);
-            id = interaction.member.user.id;
-            code = generateCode(5);
-            CACHED_PAYLOADS.links[id] = {
-                payload: username + "-" + code
-            };
-            CACHED_CHANNELS[id] = interaction.channel.id;
-            embed = buildEmbed(false, interaction.member.user).setURL('').setTitle("**Started account linking**")
-                .addFields({ name: '\u200B', value: "To complete the process, please type `/authorize " + code + "` in our Minecraft server while logged in as **" + username + "**.\n\u200B", inline: true });
-            interaction.reply({ embeds: [embed], ephemeral: true })["catch"](console.error);
+            interaction.channel.send(buildEmbed(false, interaction.user)
+                .setURL('')
+                .setTitle("**Account Linked Sucessfully**")
+                .addFields({ name: '\u200B', value: "Congratulations " + interaction.user.tag + ", you have successfully linked **tttt** to this Discord account!*.\n\u200B", inline: true }));
             return [2 /*return*/];
         });
     });

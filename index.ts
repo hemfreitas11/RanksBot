@@ -29,16 +29,10 @@ client.login(TOKEN)
 client.on('ready', () => {
 	try {
 		app.post('/f91a-kjd0-159f-ka91-8djk', (req, res) => {
-			console.log(CACHED_PAYLOADS)
-			console.log(CACHED_CHANNELS)
-			console.log(Object.keys(req.body))
 			for (const discordId of Object.keys(req.body)) {
 				const username = req.body[discordId];
 				const guild = client.guilds.cache.get(SERVER_ID)
 				const user = guild.members.cache.get(discordId)
-				console.log(username)
-				console.log(guild)
-				console.log(user)
 				if (user) {
 					let channel = undefined
 					const storedChannel = CACHED_CHANNELS[discordId]
@@ -54,7 +48,7 @@ client.on('ready', () => {
 								.setURL('')
 								.setTitle(`**Account Linked Sucessfully**`)
 								.addFields(
-									{ name: '\u200B', value: `Congratulations ${user.user.tag}, you have successfully linked **${username}** to this Discord account!*.\n\u200B`, inline: true }
+									{ name: '\u200B', value: `${user.user.tag} you have successfully linked **${username}** to this Discord account!*.\n\u200B`, inline: true }
 								)
 						console.log(embed)
 						channel.send(embed)
@@ -142,7 +136,15 @@ client.on('interactionCreate', async (interaction) => {
 })
 
 async function runLinkCommand(interaction: DiscordJS.CommandInteraction) {
-	let username = interaction.options.getString('nickname', true)
+	interaction.channel.send(
+		buildEmbed(false, interaction.user)
+			.setURL('')
+			.setTitle(`**Account Linked Sucessfully**`)
+			.addFields(
+				{ name: '\u200B', value: `Congratulations ${interaction.user.tag}, you have successfully linked **tttt** to this Discord account!*.\n\u200B`, inline: true }
+			) as unknown
+	)
+	/* let username = interaction.options.getString('nickname', true)
 	let id = interaction.member.user.id
 	let code = generateCode(5)
 
@@ -156,7 +158,7 @@ async function runLinkCommand(interaction: DiscordJS.CommandInteraction) {
 		.addFields(
 			{ name: '\u200B', value: `To complete the process, please type \`/authorize ${code}\` in our Minecraft server while logged in as **${username}**.\n\u200B`, inline: true }
 		)
-	interaction.reply({ embeds: [embed], ephemeral: true }).catch(console.error)
+	interaction.reply({ embeds: [embed], ephemeral: true }).catch(console.error) */
 }
 
 function generateCode(length) {
