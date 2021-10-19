@@ -186,7 +186,7 @@ function runLinkCommand(interaction) {
             emb = buildEmbed(false, interaction.user)
                 .setURL('')
                 .setTitle("**Account Linked Sucessfully**")
-                .addFields({ name: '\u200B', value: "Congratulations <#" + interaction.user.id + ">, you have successfully linked **tttt** to this Discord account!*.\n\u200B", inline: true });
+                .addFields({ name: '\u200B', value: "Congratulations <@" + interaction.user.id + ">, you have successfully linked **tttt** to this Discord account!*.\n\u200B", inline: true });
             interaction.channel.send({ embeds: [emb] });
             return [2 /*return*/];
         });
